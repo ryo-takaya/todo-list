@@ -12,13 +12,13 @@ const Container = styled.div`
   background-color: white;
 `;
 
-const Index = () => {
+const Index = ({ text }) => {
   return (
     <Container>
       <CheckBox />
 
       {/* <InputField /> */}
-      <Label />
+      <Label text={text} />
       <DeleteButton />
     </Container>
   );

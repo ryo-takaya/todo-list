@@ -13,9 +13,13 @@ const Input = styled.input.attrs((props) => ({
   font-weight: lighter;
 `;
 
-const Index = () => {
+const Index = ({ setTaskItem }) => {
   const createTask = (e) => {
-    console.log(e.currentTarget.value);
+    if (e.keyCode === 13) {
+      const text = e.currentTarget.value;
+      e.currentTarget.value = "";
+      setTaskItem({ text });
+    }
   };
   return <Input onKeyUp={(e) => createTask(e)} />;
 };

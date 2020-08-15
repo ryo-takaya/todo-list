@@ -1,9 +1,15 @@
 import React from "react";
-import logo from "./logo.svg";
 import "./App.css";
+import Title from "./components/Atoms/Title";
+import MainContainer from "./components/Organisms/MainContainer";
 
 function App() {
-  return <div className="App"></div>;
+  return (
+    <div>
+      <Title />
+      <MainContainer />
+    </div>
+  );
 }
 
 export default App;

@@ -1,15 +1,16 @@
 import React from "react";
 import styled from "styled-components";
 
-const Label = styled.label`
-  padding: 16px 16px 16px 60px;
-  width: 100%;
+const Label = styled.div`
+  padding: 16px 16px 16px 20px;
+  width: 90%;
   position: relative;
   border: none;
+  word-wrap: break-word;
 `;
 
-const Index = () => {
-  return <Label>gggggggggggg</Label>;
+const Index = ({ text }) => {
+  return <Label>{text}</Label>;
 };
 
 export default Index;

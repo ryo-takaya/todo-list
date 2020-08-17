@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import CheckBox from "../Atoms/CheckBox";
 import DeleteButton from "../Atoms/DeleteButton";
@@ -8,18 +8,50 @@ import Label from "../Atoms/Label";
 const Container = styled.div`
   width: 100%;
   display: flex;
-  border-bottom: 1px solid #999;
+  position: relative;
+  margin-bottom: 2px;
   background-color: white;
+  z-index: 1;
 `;
 
-const Index = ({ text }) => {
-  return (
-    <Container>
-      <CheckBox />
+const DeleteBox = styled.div`
+  width: 10%;
+  position: absolute;
+  right: 0;
+  z-index: 9;
+`;
 
+const Index = ({ text, checkFlag, index, checkedArray, setCheckedArray }) => {
+  const [hoverFlag, sethoverFlag] = useState(false);
+  const changeHoverFlag = () => {
+    sethoverFlag(!hoverFlag);
+  };
+  return (
+    <Container
+      onMouseEnter={() => {
+        changeHoverFlag();
+      }}
+      onMouseLeave={() => {
+        changeHoverFlag();
+      }}
+    >
+      <CheckBox
+        index={index}
+        checkFlag={checkFlag}
+        checkedArray={checkedArray}
+        setCheckedArray={setCheckedArray}
+      />
       {/* <InputField /> */}
       <Label text={text} />
-      <DeleteButton />
+      <DeleteBox>
+        <DeleteButton />
+      </DeleteBox>
+
+      {/* {hoverFlag && (
+        <DeleteBox>
+          <DeleteButton />
+        </DeleteBox>
+      )} */}
     </Container>
   );
 };

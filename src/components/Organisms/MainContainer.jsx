@@ -9,7 +9,7 @@ const Container = styled.div`
   min-width: 250px;
   margin: 0 auto;
   font: 24px "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-weight: 300;
+  font-weight: 100;
 `;
 
 const Li = styled.li`
@@ -28,10 +28,11 @@ const Index = () => {
         checkFlag={obj.checkFlag}
         checkedArray={checkedArray}
         setCheckedArray={setCheckedArray}
+        setTaskItem={setTaskItem}
+        taskItems={taskItems}
       />
     </Li>
   ));
-  console.log(checkedArray);
 
   const test = () => {
     const result = taskItems.filter((obj, i) =>

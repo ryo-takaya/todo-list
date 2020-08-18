@@ -9,12 +9,13 @@ const CheckBox = styled.input.attrs((props) => ({
   display: none;
   :checked + label::after {
     content: "";
-    width: 18px;
-    height: 9px;
+    width: 15px;
+    height: 4px;
     position: absolute;
-    transform: rotate(-45deg);
-    border-bottom: 3px solid;
-    border-left: 3px solid;
+    transform: translateY(9px) translateX(5px) rotate(-52deg);
+
+    border-bottom: 2px solid;
+    border-left: 2px solid;
     border-color: #585753;
   }
 `;
@@ -23,8 +24,6 @@ const Label = styled.label.attrs((props) => ({
 }))`
   display: inline-block;
   position: absolute;
-  // top: 16px;
-  // left: 10px;
   width: 23px;
   height: 23px;
   border-radius: 50%;
@@ -33,8 +32,8 @@ const Label = styled.label.attrs((props) => ({
     content: "";
     display: block;
     position: absolute;
-    width: 20px;
-    height: 20px;
+    width: 25px;
+    height: 25px;
     border: 1px solid #999;
     border-radius: 50%;
   }
@@ -52,7 +51,7 @@ const InputBox = styled.div`
   height: 23px;
 `;
 
-const Index = ({ checkFlag, index, checkedArray, setCheckedArray }) => {
+const Index = ({ setCheckedFlag, index, checkedArray, setCheckedArray }) => {
   const input = useRef(false);
   const id = shortid.generate();
 
@@ -61,12 +60,14 @@ const Index = ({ checkFlag, index, checkedArray, setCheckedArray }) => {
 
     if (flag) {
       const i = checkedArray.indexOf(index);
-
       checkedArray.splice(i, 1);
+      setCheckedFlag(false);
       setCheckedArray(checkedArray.concat());
     } else {
+      setCheckedFlag(true);
       setCheckedArray(checkedArray.concat(index));
     }
+    //改善できる
   };
   return (
     <Container>

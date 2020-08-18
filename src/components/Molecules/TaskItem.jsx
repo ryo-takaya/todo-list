@@ -9,26 +9,48 @@ const Container = styled.div`
   width: 100%;
   display: flex;
   position: relative;
-  margin-bottom: 2px;
+  margin-bottom: 1px;
   background-color: white;
   z-index: 1;
 `;
 
 const DeleteBox = styled.div`
   width: 10%;
+  height: 53px;
   position: absolute;
   right: 0;
+  bottom: 0;
   z-index: 9;
 `;
 
-const Index = ({ text, checkFlag, index, checkedArray, setCheckedArray }) => {
+const Div = styled.div`
+  width: 90%;
+`;
+
+const Index = ({
+  text,
+  index,
+  checkedArray,
+  setCheckedArray,
+  setTaskItem,
+  taskItems,
+}) => {
+  const [fieldFlag, setFieldFlag] = useState(false);
   const [hoverFlag, sethoverFlag] = useState(false);
+  const [labelText, setLabelText] = useState(text);
+  const [checkedFlag, setCheckedFlag] = useState(false);
+
   const changeHoverFlag = () => {
     sethoverFlag(!hoverFlag);
+  };
+
+  const changeField = () => {
+    setFieldFlag(!fieldFlag);
   };
   return (
     <Container
       onMouseEnter={() => {
+        console.log("enter");
         changeHoverFlag();
       }}
       onMouseLeave={() => {
@@ -37,21 +59,32 @@ const Index = ({ text, checkFlag, index, checkedArray, setCheckedArray }) => {
     >
       <CheckBox
         index={index}
-        checkFlag={checkFlag}
+        setCheckedFlag={setCheckedFlag}
         checkedArray={checkedArray}
         setCheckedArray={setCheckedArray}
       />
-      {/* <InputField /> */}
-      <Label text={text} />
-      <DeleteBox>
-        <DeleteButton />
-      </DeleteBox>
+      {fieldFlag ? (
+        <InputField
+          fieldFlag={fieldFlag}
+          setLabelText={setLabelText}
+          text={labelText}
+          setFieldFlag={setFieldFlag}
+        />
+      ) : (
+        <Div onDoubleClick={() => changeField()}>
+          <Label text={labelText} checkedFlag={checkedFlag} />
+        </Div>
+      )}
 
-      {/* {hoverFlag && (
+      {hoverFlag && (
         <DeleteBox>
-          <DeleteButton />
+          <DeleteButton
+            taskItems={taskItems}
+            index={index}
+            setTaskItem={setTaskItem}
+          />
         </DeleteBox>
-      )} */}
+      )}
     </Container>
   );
 };

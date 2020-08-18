@@ -33,11 +33,25 @@ const StickBottom = styled(StickTop)`
   transform: translateX(-10px) rotate(45deg);
 `;
 
-const Index = ({ index, setTaskItem, taskItems }) => {
+const Index = ({
+  index,
+  setTaskItem,
+  taskItems,
+  setCheckedArray,
+  checkedArray,
+  taskId,
+}) => {
   const deleteItem = () => {
-    const newArray = taskItems.concat();
-    newArray.splice(index, 1);
-    setTaskItem(newArray);
+    const newCheckedArray = checkedArray.concat();
+    const num = checkedArray.indexOf(taskId);
+
+    const newTaskItemsArray = taskItems.concat();
+    newTaskItemsArray.splice(index, 1);
+    newCheckedArray.splice(num, 1);
+    setTaskItem(newTaskItemsArray);
+    if (num !== -1) {
+      setCheckedArray(newCheckedArray);
+    }
   };
   return (
     <Container>

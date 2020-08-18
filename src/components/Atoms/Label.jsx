@@ -13,14 +13,6 @@ const Label = styled.div`
     css`
       color: #d9d9d9;
       text-decoration: line-through;
-      // &::before {
-      //   content: "";
-      //   display: block;
-      //   position: relative;
-      //   z-index: 5;
-      //   top: 50%;
-      //   border-bottom: solid 2px #d9d9d9;
-      // }
     `}
 `;
 

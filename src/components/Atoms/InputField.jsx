@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import shortid from "shortid";
 
 const Input = styled.input.attrs((props) => ({
   placeholder: "What needs to be done?",
@@ -23,20 +24,30 @@ const Input = styled.input.attrs((props) => ({
 const Index = ({
   setTaskItem,
   fieldFlag,
-  setLabelText,
+  taskItems,
   text,
   setFieldFlag,
+  taskId,
 }) => {
   const createTask = (e) => {
     if (!e.currentTarget.value) return;
+
     if (fieldFlag && e.keyCode === 13) {
       const text = e.currentTarget.value;
-      setLabelText(text);
+      const newObj = { text, taskId };
+      const newArray = taskItems.map((obj) => {
+        console.log(taskId);
+        console.log(obj.taskId === taskId);
+        return obj.taskId === taskId ? newObj : obj;
+      });
+
       setFieldFlag(false);
+      setTaskItem(newArray);
     } else if (e.keyCode === 13) {
       const text = e.currentTarget.value;
       e.currentTarget.value = "";
-      setTaskItem({ text, checkFlag: false });
+      const taskId = shortid.generate();
+      setTaskItem({ text, taskId });
     }
   };
 

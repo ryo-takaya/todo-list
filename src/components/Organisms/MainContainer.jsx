@@ -19,28 +19,24 @@ const Li = styled.li`
 const Index = () => {
   const [taskItems, setTaskItem] = useState([]);
   const [checkedArray, setCheckedArray] = useState([]);
+  const taskArray = taskItems.map((obj, i) => {
+    const flag = checkedArray.includes(obj.taskId);
 
-  const taskArray = taskItems.map((obj, i) => (
-    <Li key={`${i}${JSON.stringify(obj)}`}>
-      <TaskItem
-        text={obj.text}
-        index={i}
-        checkFlag={obj.checkFlag}
-        checkedArray={checkedArray}
-        setCheckedArray={setCheckedArray}
-        setTaskItem={setTaskItem}
-        taskItems={taskItems}
-      />
-    </Li>
-  ));
-
-  const test = () => {
-    const result = taskItems.filter((obj, i) =>
-      !checkedArray.includes(i) ? true : false
+    return (
+      <Li key={`${i}${JSON.stringify(obj)}`}>
+        <TaskItem
+          text={obj.text}
+          index={i}
+          taskId={obj.taskId}
+          checked={flag}
+          checkedArray={checkedArray}
+          setCheckedArray={setCheckedArray}
+          setTaskItem={setTaskItem}
+          taskItems={taskItems}
+        />
+      </Li>
     );
-    setCheckedArray([]);
-    setTaskItem(result);
-  };
+  });
 
   return (
     <Container>

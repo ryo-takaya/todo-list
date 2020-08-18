@@ -30,15 +30,17 @@ const Div = styled.div`
 const Index = ({
   text,
   index,
+  checked,
   checkedArray,
   setCheckedArray,
   setTaskItem,
   taskItems,
+  taskId,
 }) => {
   const [fieldFlag, setFieldFlag] = useState(false);
   const [hoverFlag, sethoverFlag] = useState(false);
   const [labelText, setLabelText] = useState(text);
-  const [checkedFlag, setCheckedFlag] = useState(false);
+  const [checkedFlag, setCheckedFlag] = useState(checked);
 
   const changeHoverFlag = () => {
     sethoverFlag(!hoverFlag);
@@ -50,7 +52,6 @@ const Index = ({
   return (
     <Container
       onMouseEnter={() => {
-        console.log("enter");
         changeHoverFlag();
       }}
       onMouseLeave={() => {
@@ -58,7 +59,9 @@ const Index = ({
       }}
     >
       <CheckBox
+        checked={checked}
         index={index}
+        taskId={taskId}
         setCheckedFlag={setCheckedFlag}
         checkedArray={checkedArray}
         setCheckedArray={setCheckedArray}
@@ -69,18 +72,24 @@ const Index = ({
           setLabelText={setLabelText}
           text={labelText}
           setFieldFlag={setFieldFlag}
+          setTaskItem={setTaskItem}
+          taskItems={taskItems}
+          taskId={taskId}
         />
       ) : (
         <Div onDoubleClick={() => changeField()}>
-          <Label text={labelText} checkedFlag={checkedFlag} />
+          <Label text={labelText} checkedFlag={checked} taskId={taskId} />
         </Div>
       )}
 
       {hoverFlag && (
         <DeleteBox>
           <DeleteButton
+            setCheckedArray={setCheckedArray}
+            checkedArray={checkedArray}
             taskItems={taskItems}
             index={index}
+            taskId={taskId}
             setTaskItem={setTaskItem}
           />
         </DeleteBox>

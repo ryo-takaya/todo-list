@@ -23,9 +23,9 @@ const Index = ({
   taskItems,
   setTaskItem,
 }) => {
-  const test = () => {
+  const deleteItems = () => {
     const result = taskItems.filter((obj, i) =>
-      !checkedArray.includes(i) ? true : false
+      !checkedArray.includes(obj.taskId) ? true : false
     );
     setCheckedArray([]);
     setTaskItem(result);
@@ -35,7 +35,7 @@ const Index = ({
     <Container>
       <P>{`${taskArray.length - checkedArray.length} items left`}</P>
       {!!checkedArray.length && (
-        <P pointer onClick={() => test()}>
+        <P pointer onClick={() => deleteItems()}>
           clear completed
         </P>
       )}

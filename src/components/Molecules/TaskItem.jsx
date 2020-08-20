@@ -4,7 +4,6 @@ import CheckBox from "../Atoms/CheckBox";
 import DeleteButton from "../Atoms/DeleteButton";
 import InputField from "../Atoms/InputField";
 import Label from "../Atoms/Label";
-import { findAllByTestId } from "@testing-library/react";
 
 const Container = styled.div`
   width: 100%;
@@ -33,7 +32,7 @@ const Index = ({
   hover,
   text,
   index,
-  checked,
+  isChecked,
   checkedArray,
   setCheckedArray,
   setTaskItem,
@@ -42,31 +41,28 @@ const Index = ({
 }) => {
   const [fieldFlag, setFieldFlag] = useState(false);
   const [hoverFlag, sethoverFlag] = useState(hover);
-  const [labelText, setLabelText] = useState(text);
-  const [checkedFlag, setCheckedFlag] = useState(checked);
 
-  const changeHoverFlag = () => {
+  const handleHover = () => {
     sethoverFlag(!hoverFlag);
   };
 
-  const changeField = () => {
+  const handelDoubleClick = () => {
     setFieldFlag(!fieldFlag);
   };
   return (
     <Container
       onMouseEnter={() => {
-        changeHoverFlag();
+        handleHover();
       }}
       onMouseLeave={() => {
-        changeHoverFlag();
+        handleHover();
       }}
     >
       {fieldFlag ? (
         <Div margin>
           <InputField
             fieldFlag={fieldFlag}
-            setLabelText={setLabelText}
-            text={labelText}
+            text={text}
             setFieldFlag={setFieldFlag}
             setTaskItem={setTaskItem}
             taskItems={taskItems}
@@ -76,20 +72,14 @@ const Index = ({
       ) : (
         <>
           <CheckBox
-            checked={checked}
+            isChecked={isChecked}
             index={index}
             taskId={taskId}
-            setCheckedFlag={setCheckedFlag}
             checkedArray={checkedArray}
             setCheckedArray={setCheckedArray}
           />
-          <Div onDoubleClick={() => changeField()}>
-            <Label
-              onDoubleClick={() => changeField}
-              text={labelText}
-              checkedFlag={checked}
-              taskId={taskId}
-            />
+          <Div onDoubleClick={() => handelDoubleClick()}>
+            <Label text={text} isChecked={isChecked} taskId={taskId} />
           </Div>
 
           {hoverFlag && (

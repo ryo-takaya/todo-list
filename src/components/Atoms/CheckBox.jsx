@@ -4,7 +4,7 @@ import shortid from "shortid";
 
 const CheckBox = styled.input.attrs((props) => ({
   type: "checkbox",
-  defaultChecked: props.checkedFlag ? "checked" : "",
+  defaultChecked: props.isChecked ? "checked" : "",
   id: props.id,
 }))`
   display: none;
@@ -52,36 +52,26 @@ const InputBox = styled.div`
   height: 23px;
 `;
 
-const Index = ({
-  setCheckedFlag,
-  checkedArray,
-  setCheckedArray,
-  checked,
-  taskId,
-}) => {
-  const input = useRef(false);
+const Index = ({ checkedArray, setCheckedArray, isChecked, taskId }) => {
+  const input = useRef();
   const id = shortid.generate();
 
   const click = (e) => {
     const flag = input.current.checked;
 
     if (flag) {
-      console.log("checked", taskId);
       const i = checkedArray.indexOf(taskId);
       checkedArray.splice(i, 1);
-      setCheckedFlag(false);
+
       setCheckedArray(checkedArray.concat());
     } else {
-      console.log("checked", taskId);
-      setCheckedFlag(true);
       setCheckedArray(checkedArray.concat(taskId));
     }
-    //改善できる
   };
   return (
     <Container>
       <InputBox>
-        <CheckBox checkedFlag={checked} ref={input} id={id} />
+        <CheckBox isChecked={isChecked} ref={input} id={id} />
         <Label onClick={(e) => click(e)} htmlFor={id} />
       </InputBox>
     </Container>

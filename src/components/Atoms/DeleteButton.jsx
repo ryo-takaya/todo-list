@@ -44,7 +44,6 @@ const Index = ({
   const deleteItem = () => {
     const newCheckedArray = checkedArray.concat();
     const num = checkedArray.indexOf(taskId);
-
     const newTaskItemsArray = taskItems.concat();
     newTaskItemsArray.splice(index, 1);
     newCheckedArray.splice(num, 1);

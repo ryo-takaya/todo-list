@@ -2,7 +2,7 @@ import React from "react";
 import styled, { css } from "styled-components";
 
 const Label = styled.div`
-  padding: 16px 16px 16px 20px;
+  padding: 16px 16px 16px 10px;
   width: 100%;
   position: relative;
   border: none;

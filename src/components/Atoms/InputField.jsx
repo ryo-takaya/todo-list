@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import shortid from "shortid";
 
 const Input = styled.input.attrs((props) => ({
@@ -9,13 +9,19 @@ const Input = styled.input.attrs((props) => ({
   display: block;
   padding: 16px 0px;
   padding-right: 16px;
-  padding-left: ${(props) => (props.fieldFlag ? "40px" : "60px")};
+  padding-left: ${(props) => (props.fieldFlag ? "10px" : "60px")};
   width: 100%;
   border: none;
   box-shadow: inset 0 -2px 1px rgba(0, 0, 0, 0.03);
   font-size: inherit;
   font-weight: 100;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  ${(props) =>
+    props.fieldFlag &&
+    css`
+      border: solid 1px black;
+      box-shadow: inset 0 -1px 5px 0 rgba(0, 0, 0, 0.2);
+    `}
   ::placeholder {
     color: #d9d9d9;
   }
@@ -36,11 +42,8 @@ const Index = ({
       const text = e.currentTarget.value;
       const newObj = { text, taskId };
       const newArray = taskItems.map((obj) => {
-        console.log(taskId);
-        console.log(obj.taskId === taskId);
         return obj.taskId === taskId ? newObj : obj;
       });
-
       setFieldFlag(false);
       setTaskItem(newArray);
     } else if (e.keyCode === 13) {

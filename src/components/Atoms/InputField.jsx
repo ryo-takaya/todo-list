@@ -50,8 +50,7 @@ const Index = ({
       const text = e.currentTarget.value;
       e.currentTarget.value = "";
       const taskId = shortid.generate();
-      setTaskItem({ text, taskId, hover: false });
-      // , hover: false
+      setTaskItem(taskItems.concat({ text, taskId, hover: false }));
     }
   };
 

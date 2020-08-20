@@ -19,8 +19,9 @@ const Li = styled.li`
 const Index = () => {
   const [taskItems, setTaskItem] = useState([]);
   const [checkedArray, setCheckedArray] = useState([]);
+
   const taskArray = taskItems.map((obj, i) => {
-    const flag = checkedArray.includes(obj.taskId);
+    const isChecked = checkedArray.includes(obj.taskId);
 
     return (
       <Li key={`${i}${JSON.stringify(obj)}`}>
@@ -29,7 +30,7 @@ const Index = () => {
           text={obj.text}
           index={i}
           taskId={obj.taskId}
-          checked={flag}
+          isChecked={isChecked}
           checkedArray={checkedArray}
           setCheckedArray={setCheckedArray}
           setTaskItem={setTaskItem}
@@ -38,14 +39,10 @@ const Index = () => {
       </Li>
     );
   });
-  console.log(taskArray);
+
   return (
     <Container>
-      <InputField
-        setTaskItem={(object) => {
-          setTaskItem(taskItems.concat(object));
-        }}
-      />
+      <InputField taskItems={taskItems} setTaskItem={setTaskItem} />
       <ul>{taskArray}</ul>
       {!!taskItems.length && (
         <Footer

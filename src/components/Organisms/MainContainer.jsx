@@ -25,6 +25,7 @@ const Index = () => {
     return (
       <Li key={`${i}${JSON.stringify(obj)}`}>
         <TaskItem
+          hover={obj.hover}
           text={obj.text}
           index={i}
           taskId={obj.taskId}
@@ -37,7 +38,7 @@ const Index = () => {
       </Li>
     );
   });
-
+  console.log(taskArray);
   return (
     <Container>
       <InputField

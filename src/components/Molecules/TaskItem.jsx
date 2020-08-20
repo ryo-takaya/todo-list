@@ -25,6 +25,7 @@ const DeleteBox = styled.div`
 
 const Div = styled.div`
   width: 90%;
+  margin-left: ${(props) => (props.margin ? "10%" : "0")};
 `;
 
 const Index = ({
@@ -58,41 +59,50 @@ const Index = ({
         changeHoverFlag();
       }}
     >
-      <CheckBox
-        checked={checked}
-        index={index}
-        taskId={taskId}
-        setCheckedFlag={setCheckedFlag}
-        checkedArray={checkedArray}
-        setCheckedArray={setCheckedArray}
-      />
       {fieldFlag ? (
-        <InputField
-          fieldFlag={fieldFlag}
-          setLabelText={setLabelText}
-          text={labelText}
-          setFieldFlag={setFieldFlag}
-          setTaskItem={setTaskItem}
-          taskItems={taskItems}
-          taskId={taskId}
-        />
-      ) : (
-        <Div onDoubleClick={() => changeField()}>
-          <Label text={labelText} checkedFlag={checked} taskId={taskId} />
-        </Div>
-      )}
-
-      {hoverFlag && (
-        <DeleteBox>
-          <DeleteButton
-            setCheckedArray={setCheckedArray}
-            checkedArray={checkedArray}
+        <Div margin>
+          <InputField
+            fieldFlag={fieldFlag}
+            setLabelText={setLabelText}
+            text={labelText}
+            setFieldFlag={setFieldFlag}
+            setTaskItem={setTaskItem}
             taskItems={taskItems}
+            taskId={taskId}
+          />
+        </Div>
+      ) : (
+        <>
+          <CheckBox
+            checked={checked}
             index={index}
             taskId={taskId}
-            setTaskItem={setTaskItem}
+            setCheckedFlag={setCheckedFlag}
+            checkedArray={checkedArray}
+            setCheckedArray={setCheckedArray}
           />
-        </DeleteBox>
+          <Div onDoubleClick={() => changeField()}>
+            <Label
+              onDoubleClick={() => changeField}
+              text={labelText}
+              checkedFlag={checked}
+              taskId={taskId}
+            />
+          </Div>
+
+          {hoverFlag && (
+            <DeleteBox>
+              <DeleteButton
+                setCheckedArray={setCheckedArray}
+                checkedArray={checkedArray}
+                taskItems={taskItems}
+                index={index}
+                taskId={taskId}
+                setTaskItem={setTaskItem}
+              />
+            </DeleteBox>
+          )}
+        </>
       )}
     </Container>
   );

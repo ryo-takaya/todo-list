@@ -40,7 +40,7 @@ const Index = ({
 
     if (fieldFlag && e.keyCode === 13) {
       const text = e.currentTarget.value;
-      const newObj = { text, taskId };
+      const newObj = { text, taskId, hover: true };
       const newArray = taskItems.map((obj) => {
         return obj.taskId === taskId ? newObj : obj;
       });
@@ -50,7 +50,8 @@ const Index = ({
       const text = e.currentTarget.value;
       e.currentTarget.value = "";
       const taskId = shortid.generate();
-      setTaskItem({ text, taskId });
+      setTaskItem({ text, taskId, hover: false });
+      // , hover: false
     }
   };
 

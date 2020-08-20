@@ -13,6 +13,7 @@ const Container = styled.div`
 const P = styled.div`
   font-size: 15px;
   padding: 10px;
+  color: #4d4d4d;
   cursor: ${(props) => (props.pointer ? `pointer` : `default`)};
 `;
 

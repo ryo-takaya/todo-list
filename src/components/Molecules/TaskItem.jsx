@@ -4,6 +4,7 @@ import CheckBox from "../Atoms/CheckBox";
 import DeleteButton from "../Atoms/DeleteButton";
 import InputField from "../Atoms/InputField";
 import Label from "../Atoms/Label";
+import { findAllByTestId } from "@testing-library/react";
 
 const Container = styled.div`
   width: 100%;
@@ -29,6 +30,7 @@ const Div = styled.div`
 `;
 
 const Index = ({
+  hover,
   text,
   index,
   checked,
@@ -39,7 +41,7 @@ const Index = ({
   taskId,
 }) => {
   const [fieldFlag, setFieldFlag] = useState(false);
-  const [hoverFlag, sethoverFlag] = useState(false);
+  const [hoverFlag, sethoverFlag] = useState(hover);
   const [labelText, setLabelText] = useState(text);
   const [checkedFlag, setCheckedFlag] = useState(checked);
 

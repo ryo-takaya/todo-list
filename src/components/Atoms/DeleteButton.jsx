@@ -42,26 +42,19 @@ const Index = ({
   taskId,
 }) => {
   const deleteItem = () => {
-    const a = taskItems.reduce((newArray, item, i) => {
-      if (i === index) {
-        return newArray;
-      } else if (index + 1 === i) {
-        item.hover = true;
-        newArray.push(item);
-      } else {
-        item.hover = false;
+    const newTaskArray = taskItems.reduce((newArray, item, i) => {
+      if (i !== index) {
         newArray.push(item);
       }
       return newArray;
     }, []);
-
     const newCheckedArray = checkedArray.concat();
-    const num = checkedArray.indexOf(taskId);
-    const newTaskItemsArray = taskItems.concat();
-    newTaskItemsArray.splice(index, 1);
-    newCheckedArray.splice(num, 1);
-    setTaskItem(a);
-    if (num !== -1) {
+    const checkedIndex = checkedArray.indexOf(taskId);
+    newCheckedArray.splice(checkedIndex, 1);
+    localStorage.setItem("taskItems", JSON.stringify(newTaskArray));
+    setTaskItem(newTaskArray);
+    if (checkedIndex !== -1) {
+      localStorage.setItem("checkedArray", JSON.stringify(newCheckedArray));
       setCheckedArray(newCheckedArray);
     }
   };

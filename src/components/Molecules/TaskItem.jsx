@@ -21,6 +21,10 @@ const DeleteBox = styled.div`
   right: 0;
   bottom: 0;
   z-index: 9;
+  display: none;
+  ${Container}:hover & {
+    display: block;
+  }
 `;
 
 const Div = styled.div`
@@ -29,7 +33,6 @@ const Div = styled.div`
 `;
 
 const Index = ({
-  hover,
   text,
   index,
   isChecked,
@@ -40,24 +43,12 @@ const Index = ({
   taskId,
 }) => {
   const [fieldFlag, setFieldFlag] = useState(false);
-  const [hoverFlag, sethoverFlag] = useState(hover);
-
-  const handleHover = () => {
-    sethoverFlag(!hoverFlag);
-  };
 
   const handelDoubleClick = () => {
     setFieldFlag(!fieldFlag);
   };
   return (
-    <Container
-      onMouseEnter={() => {
-        handleHover();
-      }}
-      onMouseLeave={() => {
-        handleHover();
-      }}
-    >
+    <Container>
       {fieldFlag ? (
         <Div margin>
           <InputField
@@ -82,18 +73,16 @@ const Index = ({
             <Label text={text} isChecked={isChecked} taskId={taskId} />
           </Div>
 
-          {hoverFlag && (
-            <DeleteBox>
-              <DeleteButton
-                setCheckedArray={setCheckedArray}
-                checkedArray={checkedArray}
-                taskItems={taskItems}
-                index={index}
-                taskId={taskId}
-                setTaskItem={setTaskItem}
-              />
-            </DeleteBox>
-          )}
+          <DeleteBox>
+            <DeleteButton
+              setCheckedArray={setCheckedArray}
+              checkedArray={checkedArray}
+              taskItems={taskItems}
+              index={index}
+              taskId={taskId}
+              setTaskItem={setTaskItem}
+            />
+          </DeleteBox>
         </>
       )}
     </Container>

@@ -25,11 +25,13 @@ const Index = ({
   setTaskItem,
 }) => {
   const deleteItems = () => {
-    const result = taskItems.filter((obj, i) =>
+    const newTaskItems = taskItems.filter((obj, i) =>
       !checkedArray.includes(obj.taskId) ? true : false
     );
+    localStorage.removeItem("checkedArray");
+    localStorage.setItem("taskItems", JSON.stringify(newTaskItems.concat()));
     setCheckedArray([]);
-    setTaskItem(result);
+    setTaskItem(newTaskItems);
   };
 
   return (

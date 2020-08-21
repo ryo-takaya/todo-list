@@ -40,17 +40,20 @@ const Index = ({
 
     if (fieldFlag && e.keyCode === 13) {
       const text = e.currentTarget.value;
-      const newObj = { text, taskId, hover: true };
-      const newArray = taskItems.map((obj) => {
+      const newObj = { text, taskId };
+      const newTaskItems = taskItems.map((obj) => {
         return obj.taskId === taskId ? newObj : obj;
       });
+      localStorage.setItem("taskItems", JSON.stringify(newTaskItems));
       setFieldFlag(false);
-      setTaskItem(newArray);
+      setTaskItem(newTaskItems);
     } else if (e.keyCode === 13) {
       const text = e.currentTarget.value;
       e.currentTarget.value = "";
       const taskId = shortid.generate();
-      setTaskItem(taskItems.concat({ text, taskId, hover: false }));
+      const newTaskItems = taskItems.concat({ text, taskId });
+      localStorage.setItem("taskItems", JSON.stringify(newTaskItems));
+      setTaskItem(newTaskItems);
     }
   };
 

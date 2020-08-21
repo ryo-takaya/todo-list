@@ -56,23 +56,25 @@ const Index = ({ checkedArray, setCheckedArray, isChecked, taskId }) => {
   const input = useRef();
   const id = shortid.generate();
 
-  const click = (e) => {
+  const click = () => {
     const flag = input.current.checked;
 
     if (flag) {
-      const i = checkedArray.indexOf(taskId);
-      checkedArray.splice(i, 1);
-
+      const deleteCheckeIndex = checkedArray.indexOf(taskId);
+      checkedArray.splice(deleteCheckeIndex, 1);
+      localStorage.setItem("checkedArray", JSON.stringify(checkedArray));
       setCheckedArray(checkedArray.concat());
     } else {
-      setCheckedArray(checkedArray.concat(taskId));
+      const newCheckedArray = checkedArray.concat(taskId);
+      localStorage.setItem("checkedArray", JSON.stringify(newCheckedArray));
+      setCheckedArray(newCheckedArray);
     }
   };
   return (
     <Container>
       <InputBox>
         <CheckBox isChecked={isChecked} ref={input} id={id} />
-        <Label onClick={(e) => click(e)} htmlFor={id} />
+        <Label onClick={() => click()} htmlFor={id} />
       </InputBox>
     </Container>
   );

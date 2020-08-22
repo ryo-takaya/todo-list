@@ -10,6 +10,7 @@ const Container = styled.div`
   margin: 0 auto;
   font: 24px "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: 100;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 25px 50px 0 rgba(0, 0, 0, 0.1);
 `;
 
 const Li = styled.li`

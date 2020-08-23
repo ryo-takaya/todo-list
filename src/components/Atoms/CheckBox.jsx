@@ -4,7 +4,7 @@ import shortid from "shortid";
 
 const CheckBox = styled.input.attrs((props) => ({
   type: "checkbox",
-  defaultChecked: props.isChecked ? "checked" : "",
+  defaultChecked: props.checkedFlag ? "checked" : "",
   id: props.id,
 }))`
   display: none;
@@ -54,29 +54,39 @@ const InputBox = styled.div`
   height: 23px;
 `;
 
-const Index = ({ checkedArray, setCheckedArray, isChecked, taskId }) => {
+const Index = ({ taskId, checked, setTaskItem, taskItems }) => {
   const input = useRef();
   const id = shortid.generate();
 
-  const click = () => {
+  const createNewTaskItems = (flag) => {
+    return taskItems.map((obj) => {
+      if (obj.taskId === taskId) {
+        obj.checked = flag;
+      }
+      return obj;
+    });
+  };
+
+  const handleClick = () => {
     const flag = input.current.checked;
 
     if (flag) {
-      const deleteCheckeIndex = checkedArray.indexOf(taskId);
-      checkedArray.splice(deleteCheckeIndex, 1);
-      localStorage.setItem("checkedArray", JSON.stringify(checkedArray));
-      setCheckedArray(checkedArray.concat());
+      const newTaskItems = createNewTaskItems(false);
+      setTaskItem(newTaskItems);
+
+      localStorage.setItem("taskItems", JSON.stringify(newTaskItems));
     } else {
-      const newCheckedArray = checkedArray.concat(taskId);
-      localStorage.setItem("checkedArray", JSON.stringify(newCheckedArray));
-      setCheckedArray(newCheckedArray);
+      const newTaskItems = createNewTaskItems(true);
+      setTaskItem(newTaskItems);
+
+      localStorage.setItem("taskItems", JSON.stringify(newTaskItems));
     }
   };
   return (
     <Container>
       <InputBox>
-        <CheckBox isChecked={isChecked} ref={input} id={id} />
-        <Label onClick={() => click()} htmlFor={id} />
+        <CheckBox checkedFlag={checked} ref={input} id={id} />
+        <Label onClick={() => handleClick()} htmlFor={id} />
       </InputBox>
     </Container>
   );

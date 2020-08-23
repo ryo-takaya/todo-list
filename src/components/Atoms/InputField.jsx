@@ -51,7 +51,7 @@ const Index = ({
       const text = e.currentTarget.value;
       e.currentTarget.value = "";
       const taskId = shortid.generate();
-      const newTaskItems = taskItems.concat({ text, taskId });
+      const newTaskItems = taskItems.concat({ text, taskId, checked: false });
       localStorage.setItem("taskItems", JSON.stringify(newTaskItems));
       setTaskItem(newTaskItems);
     }

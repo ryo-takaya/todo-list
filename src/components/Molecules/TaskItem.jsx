@@ -32,16 +32,7 @@ const Div = styled.div`
   margin-left: ${(props) => (props.margin ? "10%" : "0")};
 `;
 
-const Index = ({
-  text,
-  index,
-  isChecked,
-  checkedArray,
-  setCheckedArray,
-  setTaskItem,
-  taskItems,
-  taskId,
-}) => {
+const Index = ({ text, index, checked, setTaskItem, taskItems, taskId }) => {
   const [fieldFlag, setFieldFlag] = useState(false);
 
   const handelDoubleClick = () => {
@@ -63,20 +54,17 @@ const Index = ({
       ) : (
         <>
           <CheckBox
-            isChecked={isChecked}
-            index={index}
+            checked={checked}
+            setTaskItem={setTaskItem}
+            taskItems={taskItems}
             taskId={taskId}
-            checkedArray={checkedArray}
-            setCheckedArray={setCheckedArray}
           />
           <Div onDoubleClick={() => handelDoubleClick()}>
-            <Label text={text} isChecked={isChecked} taskId={taskId} />
+            <Label text={text} checked={checked} taskId={taskId} />
           </Div>
 
           <DeleteBox>
             <DeleteButton
-              setCheckedArray={setCheckedArray}
-              checkedArray={checkedArray}
               taskItems={taskItems}
               index={index}
               taskId={taskId}

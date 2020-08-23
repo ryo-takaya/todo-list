@@ -33,30 +33,17 @@ const StickBottom = styled(StickTop)`
   transform: translateX(-10px) rotate(45deg);
 `;
 
-const Index = ({
-  index,
-  setTaskItem,
-  taskItems,
-  setCheckedArray,
-  checkedArray,
-  taskId,
-}) => {
+const Index = ({ setTaskItem, taskItems, taskId }) => {
   const deleteItem = () => {
-    const newTaskArray = taskItems.reduce((newArray, item, i) => {
-      if (i !== index) {
+    const newTaskItems = taskItems.reduce((newArray, item, i) => {
+      if (item.taskId !== taskId) {
         newArray.push(item);
       }
       return newArray;
     }, []);
-    const newCheckedArray = checkedArray.concat();
-    const checkedIndex = checkedArray.indexOf(taskId);
-    newCheckedArray.splice(checkedIndex, 1);
-    localStorage.setItem("taskItems", JSON.stringify(newTaskArray));
-    setTaskItem(newTaskArray);
-    if (checkedIndex !== -1) {
-      localStorage.setItem("checkedArray", JSON.stringify(newCheckedArray));
-      setCheckedArray(newCheckedArray);
-    }
+
+    localStorage.setItem("taskItems", JSON.stringify(newTaskItems));
+    setTaskItem(newTaskItems);
   };
   return (
     <Container>

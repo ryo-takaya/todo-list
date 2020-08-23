@@ -9,15 +9,15 @@ const Label = styled.div`
   word-wrap: break-word;
   transition: all 0.4s;
   ${(props) =>
-    props.isChecked &&
+    props.checkedFlag &&
     css`
       color: #d9d9d9;
       text-decoration: line-through;
     `}
 `;
 
-const Index = ({ text, isChecked }) => {
-  return <Label isChecked={isChecked}>{text}</Label>;
+const Index = ({ text, checked }) => {
+  return <Label checkedFlag={checked}>{text}</Label>;
 };
 
 export default Index;

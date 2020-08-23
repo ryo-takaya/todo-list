@@ -18,28 +18,30 @@ const P = styled.div`
   cursor: ${(props) => (props.pointer ? `pointer` : `default`)};
 `;
 
-const Index = ({
-  taskArray,
-  checkedArray,
-  setCheckedArray,
-  taskItems,
-  setTaskItem,
-}) => {
-  const deleteItems = () => {
-    const newTaskItems = taskItems.filter((obj, i) =>
-      !checkedArray.includes(obj.taskId) ? true : false
-    );
-    localStorage.removeItem("checkedArray");
+const Index = ({ taskItems, setTaskItem }) => {
+  const { leftItems, deleteItems } = taskItems.reduce(
+    (obj, taskItem) => {
+      if (taskItem.checked) {
+        obj.deleteItems++;
+      } else {
+        obj.leftItems++;
+      }
+      return obj;
+    },
+    { leftItems: 0, deleteItems: 0 }
+  );
+
+  const handleClick = () => {
+    const newTaskItems = taskItems.filter((obj) => !obj.checked);
     localStorage.setItem("taskItems", JSON.stringify(newTaskItems.concat()));
-    setCheckedArray([]);
     setTaskItem(newTaskItems);
   };
 
   return (
     <Container>
-      <P>{`${taskArray.length - checkedArray.length} items left`}</P>
-      {!!checkedArray.length && (
-        <P pointer onClick={() => deleteItems()}>
+      <P>{`${leftItems} items left`}</P>
+      {!!deleteItems && (
+        <P pointer onClick={() => handleClick()}>
           clear completed
         </P>
       )}

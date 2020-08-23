@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import styled from "styled-components";
 import InputField from "../Atoms/InputField";
 import TaskItem from "../Molecules/TaskItem";
@@ -19,31 +19,22 @@ const Li = styled.li`
 
 const Index = () => {
   const [taskItems, setTaskItem] = useState([]);
-  const [checkedArray, setCheckedArray] = useState([]);
 
   useEffect(() => {
     const initTaskItems = JSON.parse(localStorage.getItem("taskItems"));
-    const initCheckedArray = JSON.parse(localStorage.getItem("checkedArray"));
-    if (initTaskItems !== null && initCheckedArray !== null) {
-      setTaskItem(initTaskItems);
-      setCheckedArray(initCheckedArray);
-    } else if (initTaskItems !== null) {
+    if (initTaskItems !== null) {
       setTaskItem(initTaskItems);
     }
   }, []);
 
   const taskArray = taskItems.map((obj, i) => {
-    const isChecked = checkedArray.includes(obj.taskId);
-
     return (
       <Li key={`${i}${JSON.stringify(obj)}`}>
         <TaskItem
           text={obj.text}
           index={i}
           taskId={obj.taskId}
-          isChecked={isChecked}
-          checkedArray={checkedArray}
-          setCheckedArray={setCheckedArray}
+          checked={obj.checked}
           setTaskItem={setTaskItem}
           taskItems={taskItems}
         />
@@ -56,13 +47,7 @@ const Index = () => {
       <InputField taskItems={taskItems} setTaskItem={setTaskItem} />
       <ul>{taskArray}</ul>
       {!!taskItems.length && (
-        <Footer
-          taskArray={taskArray}
-          checkedArray={checkedArray}
-          setCheckedArray={setCheckedArray}
-          taskItems={taskItems}
-          setTaskItem={setTaskItem}
-        />
+        <Footer taskItems={taskItems} setTaskItem={setTaskItem} />
       )}
     </Container>
   );

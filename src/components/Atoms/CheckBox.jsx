@@ -1,6 +1,7 @@
 import React, { useRef } from "react";
 import styled from "styled-components";
 import shortid from "shortid";
+import { gql, useMutation } from "@apollo/client";
 
 const CheckBox = styled.input.attrs((props) => ({
   type: "checkbox",
@@ -52,7 +53,29 @@ const InputBox = styled.div`
   height: 23px;
 `;
 
-const Index = ({ checkedArray, setCheckedArray, isChecked, taskId }) => {
+const CHANGE_CHECKED_FLAG = gql`
+  mutation changeCheckedFlag($id: Int, $checked: Boolean!) {
+    changeCheckedFlag(id: $id, checked: $checked) {
+      id
+      text
+      checked
+    }
+  }
+`;
+
+const Index = ({ isChecked, taskId }) => {
+  const [changeCheckedFlag] = useMutation(CHANGE_CHECKED_FLAG, {
+    update(cache, { data: { changeCheckedFlag } }) {
+      console.log(changeCheckedFlag);
+      cache.modify({
+        fields: {
+          taskItems(exist) {
+            return changeCheckedFlag;
+          },
+        },
+      });
+    },
+  });
   const input = useRef();
   const id = shortid.generate();
 
@@ -60,14 +83,9 @@ const Index = ({ checkedArray, setCheckedArray, isChecked, taskId }) => {
     const flag = input.current.checked;
 
     if (flag) {
-      const deleteCheckeIndex = checkedArray.indexOf(taskId);
-      checkedArray.splice(deleteCheckeIndex, 1);
-      localStorage.setItem("checkedArray", JSON.stringify(checkedArray));
-      setCheckedArray(checkedArray.concat());
+      changeCheckedFlag({ variables: { id: taskId, checked: isChecked } });
     } else {
-      const newCheckedArray = checkedArray.concat(taskId);
-      localStorage.setItem("checkedArray", JSON.stringify(newCheckedArray));
-      setCheckedArray(newCheckedArray);
+      changeCheckedFlag({ variables: { id: taskId, checked: isChecked } });
     }
   };
   return (

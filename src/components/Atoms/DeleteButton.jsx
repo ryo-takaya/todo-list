@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { gql, useMutation } from "@apollo/client";
 
 const Container = styled.div`
   width: 100%;
@@ -33,30 +34,30 @@ const StickBottom = styled(StickTop)`
   transform: translateX(-10px) rotate(45deg);
 `;
 
-const Index = ({
-  index,
-  setTaskItem,
-  taskItems,
-  setCheckedArray,
-  checkedArray,
-  taskId,
-}) => {
-  const deleteItem = () => {
-    const newTaskArray = taskItems.reduce((newArray, item, i) => {
-      if (i !== index) {
-        newArray.push(item);
-      }
-      return newArray;
-    }, []);
-    const newCheckedArray = checkedArray.concat();
-    const checkedIndex = checkedArray.indexOf(taskId);
-    newCheckedArray.splice(checkedIndex, 1);
-    localStorage.setItem("taskItems", JSON.stringify(newTaskArray));
-    setTaskItem(newTaskArray);
-    if (checkedIndex !== -1) {
-      localStorage.setItem("checkedArray", JSON.stringify(newCheckedArray));
-      setCheckedArray(newCheckedArray);
+const DELETE_TASK_ITEM = gql`
+  mutation deleteTaskItem($id: Int!) {
+    deleteTaskItem(id: $id) {
+      id
+      text
+      checked
     }
+  }
+`;
+
+const Index = ({ taskId }) => {
+  const [deleteTaskItem] = useMutation(DELETE_TASK_ITEM, {
+    update(cache, { data: { deleteTaskItem } }) {
+      cache.modify({
+        fields: {
+          taskItems(exist) {
+            return deleteTaskItem;
+          },
+        },
+      });
+    },
+  });
+  const deleteItem = () => {
+    deleteTaskItem({ variables: { id: taskId } });
   };
   return (
     <Container>

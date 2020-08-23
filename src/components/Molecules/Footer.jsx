@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { gql, useMutation } from "@apollo/client";
 
 const Container = styled.div`
   width: 100%;
@@ -17,27 +18,42 @@ const P = styled.div`
   cursor: ${(props) => (props.pointer ? `pointer` : `default`)};
 `;
 
-const Index = ({
-  taskArray,
-  checkedArray,
-  setCheckedArray,
-  taskItems,
-  setTaskItem,
-}) => {
+const DELETE_CHECKED_TASK_ITEM = gql`
+  mutation deleteCheckedTaskItem {
+    deleteCheckedTaskItem {
+      id
+      text
+      checked
+    }
+  }
+`;
+
+const Index = ({ taskItems }) => {
+  const [deleteCheckedTaskItem] = useMutation(DELETE_CHECKED_TASK_ITEM, {
+    update(cache, { data: { deleteCheckedTaskItem } }) {
+      cache.modify({
+        fields: {
+          taskItems(exist) {
+            return deleteCheckedTaskItem;
+          },
+        },
+      });
+    },
+  });
+  const num = taskItems.reduce((num, obj) => {
+    if (obj.checked) {
+      num++;
+    }
+    return num;
+  }, 0);
   const deleteItems = () => {
-    const newTaskItems = taskItems.filter((obj, i) =>
-      !checkedArray.includes(obj.taskId) ? true : false
-    );
-    localStorage.removeItem("checkedArray");
-    localStorage.setItem("taskItems", JSON.stringify(newTaskItems.concat()));
-    setCheckedArray([]);
-    setTaskItem(newTaskItems);
+    deleteCheckedTaskItem();
   };
 
   return (
     <Container>
-      <P>{`${taskArray.length - checkedArray.length} items left`}</P>
-      {!!checkedArray.length && (
+      <P>{`${taskItems.length - num} items left`}</P>
+      {!!num && (
         <P pointer onClick={() => deleteItems()}>
           clear completed
         </P>

@@ -3,6 +3,17 @@ import styled from "styled-components";
 import InputField from "../Atoms/InputField";
 import TaskItem from "../Molecules/TaskItem";
 import Footer from "../Molecules/Footer";
+import { gql, useQuery } from "@apollo/client";
+
+const TASK_ITEMS = gql`
+  query taskItems {
+    taskItems {
+      id
+      text
+      checked
+    }
+  }
+`;
 
 const Container = styled.div`
   max-width: 550px;
@@ -17,34 +28,22 @@ const Li = styled.li`
 `;
 
 const Index = () => {
+  const { loading, error, data } = useQuery(TASK_ITEMS);
   const [taskItems, setTaskItem] = useState([]);
-  const [checkedArray, setCheckedArray] = useState([]);
 
-  useEffect(() => {
-    const initTaskItems = JSON.parse(localStorage.getItem("taskItems"));
-    const initCheckedArray = JSON.parse(localStorage.getItem("checkedArray"));
-    if (initTaskItems !== null && initCheckedArray !== null) {
-      setTaskItem(initTaskItems);
-      setCheckedArray(initCheckedArray);
-    } else if (initTaskItems !== null) {
-      setTaskItem(initTaskItems);
-    }
-  }, []);
-
-  const taskArray = taskItems.map((obj, i) => {
-    const isChecked = checkedArray.includes(obj.taskId);
-
+  if (loading) {
+    return <p>loding</p>;
+  }
+  
+  const array = data.taskItems.map((obj, i) => {
     return (
       <Li key={`${i}${JSON.stringify(obj)}`}>
         <TaskItem
           text={obj.text}
           index={i}
-          taskId={obj.taskId}
-          isChecked={isChecked}
-          checkedArray={checkedArray}
-          setCheckedArray={setCheckedArray}
-          setTaskItem={setTaskItem}
-          taskItems={taskItems}
+          taskId={obj.id}
+          isChecked={obj.checked}
+          taskItems={data.taskItems}
         />
       </Li>
     );
@@ -52,17 +51,9 @@ const Index = () => {
 
   return (
     <Container>
-      <InputField taskItems={taskItems} setTaskItem={setTaskItem} />
-      <ul>{taskArray}</ul>
-      {!!taskItems.length && (
-        <Footer
-          taskArray={taskArray}
-          checkedArray={checkedArray}
-          setCheckedArray={setCheckedArray}
-          taskItems={taskItems}
-          setTaskItem={setTaskItem}
-        />
-      )}
+      <InputField taskItems={taskItems} />
+      <ul>{array}</ul>
+      {!!array.length && <Footer taskItems={data.taskItems} />}
     </Container>
   );
 };

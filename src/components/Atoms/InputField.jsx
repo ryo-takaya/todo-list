@@ -1,6 +1,6 @@
 import React from "react";
 import styled, { css } from "styled-components";
-import shortid from "shortid";
+import { gql, useMutation } from "@apollo/client";
 
 const Input = styled.input.attrs((props) => ({
   placeholder: "What needs to be done?",
@@ -27,33 +27,62 @@ const Input = styled.input.attrs((props) => ({
   }
 `;
 
-const Index = ({
-  setTaskItem,
-  fieldFlag,
-  taskItems,
-  text,
-  setFieldFlag,
-  taskId,
-}) => {
+const CHANGE_TEXT = gql`
+  mutation changeText($id: Int, $text: String!) {
+    changeText(id: $id, text: $text) {
+      id
+      text
+      checked
+    }
+  }
+`;
+
+const CREATE_TASK_ITEM = gql`
+  mutation createTaskItem($text: String!) {
+    createTaskItem(text: $text) {
+      id
+      text
+      checked
+    }
+  }
+`;
+
+const Index = ({ taskItems, text, setFieldFlag, taskId, fieldFlag }) => {
+  const [createTaskItem] = useMutation(CREATE_TASK_ITEM, {
+    update(cache, { data: { createTaskItem } }) {
+      cache.modify({
+        fields: {
+          taskItems(exist) {
+            return [...createTaskItem];
+          },
+        },
+      });
+    },
+  });
+
+  const [changeText] = useMutation(CHANGE_TEXT, {
+    update(cache, { data: { changeText } }) {
+      cache.modify({
+        fields: {
+          taskItems(exist) {
+            return changeText;
+          },
+        },
+      });
+    },
+  });
+
   const createTask = (e) => {
     if (!e.currentTarget.value) return;
 
     if (fieldFlag && e.keyCode === 13) {
       const text = e.currentTarget.value;
-      const newObj = { text, taskId };
-      const newTaskItems = taskItems.map((obj) => {
-        return obj.taskId === taskId ? newObj : obj;
-      });
-      localStorage.setItem("taskItems", JSON.stringify(newTaskItems));
       setFieldFlag(false);
-      setTaskItem(newTaskItems);
+      changeText({ variables: { id: taskId, text } });
     } else if (e.keyCode === 13) {
       const text = e.currentTarget.value;
       e.currentTarget.value = "";
-      const taskId = shortid.generate();
-      const newTaskItems = taskItems.concat({ text, taskId });
-      localStorage.setItem("taskItems", JSON.stringify(newTaskItems));
-      setTaskItem(newTaskItems);
+      createTaskItem({ variables: { text: text } });
     }
   };
 

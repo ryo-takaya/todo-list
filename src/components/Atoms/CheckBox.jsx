@@ -68,7 +68,6 @@ const CHANGE_CHECKED_FLAG = gql`
 const Index = ({ isChecked, taskId }) => {
   const [changeCheckedFlag] = useMutation(CHANGE_CHECKED_FLAG, {
     update(cache, { data: { changeCheckedFlag } }) {
-      console.log(changeCheckedFlag);
       cache.modify({
         fields: {
           taskItems(exist) {

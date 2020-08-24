@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 import InputField from "../Atoms/InputField";
 import TaskItem from "../Molecules/TaskItem";
@@ -30,8 +30,7 @@ const Li = styled.li`
 
 const Index = () => {
   const { loading, error, data } = useQuery(TASK_ITEMS);
-  const [taskItems, setTaskItem] = useState([]);
-
+  
   if (loading) {
     return <p>loding</p>;
   }
@@ -41,7 +40,6 @@ const Index = () => {
       <Li key={`${i}${JSON.stringify(obj)}`}>
         <TaskItem
           text={obj.text}
-          index={i}
           taskId={obj.id}
           isChecked={obj.checked}
           taskItems={data.taskItems}
@@ -52,7 +50,7 @@ const Index = () => {
 
   return (
     <Container>
-      <InputField taskItems={taskItems} />
+      <InputField />
       <ul>{array}</ul>
       {!!array.length && <Footer taskItems={data.taskItems} />}
     </Container>

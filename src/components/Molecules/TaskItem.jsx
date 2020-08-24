@@ -32,38 +32,43 @@ const Div = styled.div`
   margin-left: ${(props) => (props.margin ? "10%" : "0")};
 `;
 
-const Index = ({ text, index, isChecked, taskItems, taskId }) => {
-  const [fieldFlag, setFieldFlag] = useState(false);
+const Index = React.memo(
+  ({ text, isChecked, taskItems, taskId }) => {
+    console.log(taskId);
+    const [fieldFlag, setFieldFlag] = useState(false);
 
-  const handelDoubleClick = () => {
-    setFieldFlag(!fieldFlag);
-  };
-  return (
-    <Container>
-      {fieldFlag ? (
-        <Div margin>
-          <InputField
-            fieldFlag={fieldFlag}
-            text={text}
-            setFieldFlag={setFieldFlag}
-            taskItems={taskItems}
-            taskId={taskId}
-          />
-        </Div>
-      ) : (
-        <>
-          <CheckBox isChecked={isChecked} index={index} taskId={taskId} />
-          <Div onDoubleClick={() => handelDoubleClick()}>
-            <Label text={text} isChecked={isChecked} taskId={taskId} />
+    const handelDoubleClick = () => {
+      setFieldFlag(!fieldFlag);
+    };
+    return (
+      <Container>
+        {fieldFlag ? (
+          <Div margin>
+            <InputField
+              fieldFlag={fieldFlag}
+              text={text}
+              setFieldFlag={setFieldFlag}
+              taskItems={taskItems}
+              taskId={taskId}
+            />
           </Div>
+        ) : (
+          <>
+            <CheckBox isChecked={isChecked} taskId={taskId} />
+            <Div onDoubleClick={() => handelDoubleClick()}>
+              <Label text={text} isChecked={isChecked} taskId={taskId} />
+            </Div>
 
-          <DeleteBox>
-            <DeleteButton taskItems={taskItems} index={index} taskId={taskId} />
-          </DeleteBox>
-        </>
-      )}
-    </Container>
-  );
-};
+            <DeleteBox>
+              <DeleteButton taskItems={taskItems} taskId={taskId} />
+            </DeleteBox>
+          </>
+        )}
+      </Container>
+    );
+  },
+  (prevProps, nextProps) =>
+    prevProps.text === nextProps.text && prevProps.checked === nextProps.checked
+);
 
 export default Index;

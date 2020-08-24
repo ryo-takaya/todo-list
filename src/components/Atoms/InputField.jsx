@@ -47,13 +47,24 @@ const CREATE_TASK_ITEM = gql`
   }
 `;
 
-const Index = ({ taskItems, text, setFieldFlag, taskId, fieldFlag }) => {
+const Index = ({ text, setFieldFlag, taskId, fieldFlag }) => {
   const [createTaskItem] = useMutation(CREATE_TASK_ITEM, {
     update(cache, { data: { createTaskItem } }) {
       cache.modify({
         fields: {
           taskItems(exist) {
-            return [...createTaskItem];
+            const newTaskItem = cache.writeFragment({
+              data: createTaskItem,
+              fragment: gql`
+                fragment item on taskItems {
+                  id
+                  text
+                  checked
+                }
+              `,
+            });
+
+            return [...exist, newTaskItem];
           },
         },
       });
@@ -65,7 +76,23 @@ const Index = ({ taskItems, text, setFieldFlag, taskId, fieldFlag }) => {
       cache.modify({
         fields: {
           taskItems(exist) {
-            return changeText;
+            const data = cache.readQuery({
+              query: gql`
+                query taskItems {
+                  taskItems {
+                    id
+                    text
+                    checked
+                  }
+                }
+              `,
+            });
+
+            const newTaskItem = data.taskItems.map((obj) =>
+              obj.id === changeText.id ? changeText : obj
+            );
+
+            return newTaskItem;
           },
         },
       });

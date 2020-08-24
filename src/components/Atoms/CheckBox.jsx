@@ -71,7 +71,23 @@ const Index = ({ isChecked, taskId }) => {
       cache.modify({
         fields: {
           taskItems(exist) {
-            return changeCheckedFlag;
+            const data = cache.readQuery({
+              query: gql`
+                query taskItems {
+                  taskItems {
+                    id
+                    text
+                    checked
+                  }
+                }
+              `,
+            });
+
+            const newTaskItem = data.taskItems.map((obj) =>
+              obj.id === changeCheckedFlag.id ? changeCheckedFlag : obj
+            );
+
+            return newTaskItem;
           },
         },
       });

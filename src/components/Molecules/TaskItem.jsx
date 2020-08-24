@@ -34,7 +34,6 @@ const Div = styled.div`
 
 const Index = React.memo(
   ({ text, isChecked, taskItems, taskId }) => {
-    console.log(taskId);
     const [fieldFlag, setFieldFlag] = useState(false);
 
     const handelDoubleClick = () => {

@@ -38,8 +38,6 @@ const DELETE_TASK_ITEM = gql`
   mutation deleteTaskItem($id: Int!) {
     deleteTaskItem(id: $id) {
       id
-      text
-      checked
     }
   }
 `;
@@ -50,7 +48,22 @@ const Index = ({ taskId }) => {
       cache.modify({
         fields: {
           taskItems(exist) {
-            return deleteTaskItem;
+            const task_items = cache.readQuery({
+              query: gql`
+                query taskItems {
+                  taskItems {
+                    id
+                    text
+                    checked
+                  }
+                }
+              `,
+            });
+
+            const newTaskItems = task_items.taskItems.filter(
+              (obj) => obj.id !== deleteTaskItem.id
+            );
+            return newTaskItems;
           },
         },
       });

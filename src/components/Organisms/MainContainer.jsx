@@ -4,17 +4,7 @@ import InputField from "../Atoms/InputField";
 import TaskItem from "../Molecules/TaskItem";
 import Footer from "../Molecules/Footer";
 import { TASK_ITEMS } from "../../graphQl/query";
-import { gql, useQuery } from "@apollo/client";
-
-// const TASK_ITEMS = gql`
-//   query taskItems {
-//     taskItems {
-//       id
-//       text
-//       checked
-//     }
-//   }
-// `;
+import { useQuery } from "@apollo/client";
 
 const Container = styled.div`
   max-width: 550px;

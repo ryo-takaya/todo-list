@@ -1,4 +1,4 @@
-import { gql, useMutation } from "@apollo/client";
+import { gql} from "@apollo/client";
 
 export const CHANGE_TEXT = gql`
   mutation changeText($id: Int, $text: String!) {

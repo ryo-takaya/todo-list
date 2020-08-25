@@ -27,7 +27,7 @@ const DeleteBox = styled.div`
   }
 `;
 
-const Div = styled.div`
+const TextField = styled.div`
   width: 90%;
   margin-left: ${(props) => (props.margin ? "10%" : "0")};
 `;
@@ -42,20 +42,20 @@ const Index = React.memo(
     return (
       <Container>
         {fieldFlag ? (
-          <Div margin>
+          <TextField margin>
             <InputField
               fieldFlag={fieldFlag}
               text={text}
               setFieldFlag={setFieldFlag}
               taskId={taskId}
             />
-          </Div>
+          </TextField>
         ) : (
           <>
             <CheckBox isChecked={isChecked} taskId={taskId} />
-            <Div onDoubleClick={() => handelDoubleClick()}>
+            <TextField onDoubleClick={() => handelDoubleClick()}>
               <Label text={text} isChecked={isChecked} taskId={taskId} />
-            </Div>
+            </TextField>
 
             <DeleteBox>
               <DeleteButton taskId={taskId} />

@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import { gql, useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client";
+import { DELETE_TASK_ITEM } from "../../graphQl/mutation";
+import { TASK_ITEMS } from "../../graphQl/query";
 
 const Container = styled.div`
   width: 100%;
@@ -34,14 +36,6 @@ const StickBottom = styled(StickTop)`
   transform: translateX(-10px) rotate(45deg);
 `;
 
-const DELETE_TASK_ITEM = gql`
-  mutation deleteTaskItem($id: Int!) {
-    deleteTaskItem(id: $id) {
-      id
-    }
-  }
-`;
-
 const Index = ({ taskId }) => {
   const [deleteTaskItem] = useMutation(DELETE_TASK_ITEM, {
     update(cache, { data: { deleteTaskItem } }) {
@@ -49,15 +43,7 @@ const Index = ({ taskId }) => {
         fields: {
           taskItems(exist) {
             const task_items = cache.readQuery({
-              query: gql`
-                query taskItems {
-                  taskItems {
-                    id
-                    text
-                    checked
-                  }
-                }
-              `,
+              query: TASK_ITEMS,
             });
 
             const newTaskItems = task_items.taskItems.filter(

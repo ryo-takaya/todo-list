@@ -1,7 +1,9 @@
 import React, { useRef } from "react";
 import styled from "styled-components";
 import shortid from "shortid";
-import { gql, useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client";
+import { CHANGE_CHECKED_FLAG } from "../../graphQl/mutation";
+import { TASK_ITEMS } from "../../graphQl/query";
 
 const CheckBox = styled.input.attrs((props) => ({
   type: "checkbox",
@@ -55,16 +57,6 @@ const InputBox = styled.div`
   height: 23px;
 `;
 
-const CHANGE_CHECKED_FLAG = gql`
-  mutation changeCheckedFlag($id: Int, $checked: Boolean!) {
-    changeCheckedFlag(id: $id, checked: $checked) {
-      id
-      text
-      checked
-    }
-  }
-`;
-
 const Index = ({ isChecked, taskId }) => {
   const [changeCheckedFlag] = useMutation(CHANGE_CHECKED_FLAG, {
     update(cache, { data: { changeCheckedFlag } }) {
@@ -72,15 +64,7 @@ const Index = ({ isChecked, taskId }) => {
         fields: {
           taskItems(exist) {
             const data = cache.readQuery({
-              query: gql`
-                query taskItems {
-                  taskItems {
-                    id
-                    text
-                    checked
-                  }
-                }
-              `,
+              query: TASK_ITEMS,
             });
 
             const newTaskItem = data.taskItems.map((obj) =>

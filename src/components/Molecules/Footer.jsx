@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import { gql, useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client";
+import { DELETE_CHECKED_TASK_ITEM } from "../../graphQl/mutation";
 
 const Container = styled.div`
   width: 100%;
@@ -16,16 +17,6 @@ const P = styled.div`
   padding: 10px;
   color: #4d4d4d;
   cursor: ${(props) => (props.pointer ? `pointer` : `default`)};
-`;
-
-const DELETE_CHECKED_TASK_ITEM = gql`
-  mutation deleteCheckedTaskItem {
-    deleteCheckedTaskItem {
-      id
-      text
-      checked
-    }
-  }
 `;
 
 const Index = ({ taskItems }) => {

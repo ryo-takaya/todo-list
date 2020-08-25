@@ -3,17 +3,18 @@ import styled from "styled-components";
 import InputField from "../Atoms/InputField";
 import TaskItem from "../Molecules/TaskItem";
 import Footer from "../Molecules/Footer";
+import { TASK_ITEMS } from "../../graphQl/query";
 import { gql, useQuery } from "@apollo/client";
 
-const TASK_ITEMS = gql`
-  query taskItems {
-    taskItems {
-      id
-      text
-      checked
-    }
-  }
-`;
+// const TASK_ITEMS = gql`
+//   query taskItems {
+//     taskItems {
+//       id
+//       text
+//       checked
+//     }
+//   }
+// `;
 
 const Container = styled.div`
   max-width: 550px;
@@ -30,7 +31,7 @@ const Li = styled.li`
 
 const Index = () => {
   const { loading, error, data } = useQuery(TASK_ITEMS);
-  
+
   if (loading) {
     return <p>loding</p>;
   }
@@ -38,12 +39,7 @@ const Index = () => {
   const array = data.taskItems.map((obj, i) => {
     return (
       <Li key={`${i}${JSON.stringify(obj)}`}>
-        <TaskItem
-          text={obj.text}
-          taskId={obj.id}
-          isChecked={obj.checked}
-          taskItems={data.taskItems}
-        />
+        <TaskItem text={obj.text} taskId={obj.id} isChecked={obj.checked} />
       </Li>
     );
   });

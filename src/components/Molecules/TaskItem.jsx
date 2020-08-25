@@ -33,7 +33,7 @@ const Div = styled.div`
 `;
 
 const Index = React.memo(
-  ({ text, isChecked, taskItems, taskId }) => {
+  ({ text, isChecked, taskId }) => {
     const [fieldFlag, setFieldFlag] = useState(false);
 
     const handelDoubleClick = () => {
@@ -47,7 +47,6 @@ const Index = React.memo(
               fieldFlag={fieldFlag}
               text={text}
               setFieldFlag={setFieldFlag}
-              taskItems={taskItems}
               taskId={taskId}
             />
           </Div>
@@ -59,15 +58,15 @@ const Index = React.memo(
             </Div>
 
             <DeleteBox>
-              <DeleteButton taskItems={taskItems} taskId={taskId} />
+              <DeleteButton taskId={taskId} />
             </DeleteBox>
           </>
         )}
       </Container>
     );
-  },
-  (prevProps, nextProps) =>
-    prevProps.text === nextProps.text && prevProps.checked === nextProps.checked
+  }
+  // (prevProps, nextProps) =>
+  //   prevProps.text === nextProps.text && prevProps.checked === nextProps.checked
 );
 
 export default Index;

@@ -1,6 +1,9 @@
 import React from "react";
 import styled, { css } from "styled-components";
-import { gql, useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client";
+import { CREATE_TASK_ITEM, CHANGE_TEXT } from "../../graphQl/mutation";
+import { ITEM } from "../../graphQl/flagment";
+import { TASK_ITEMS } from "../../graphQl/query";
 
 const Input = styled.input.attrs((props) => ({
   placeholder: "What needs to be done?",
@@ -27,26 +30,6 @@ const Input = styled.input.attrs((props) => ({
   }
 `;
 
-const CHANGE_TEXT = gql`
-  mutation changeText($id: Int, $text: String!) {
-    changeText(id: $id, text: $text) {
-      id
-      text
-      checked
-    }
-  }
-`;
-
-const CREATE_TASK_ITEM = gql`
-  mutation createTaskItem($text: String!) {
-    createTaskItem(text: $text) {
-      id
-      text
-      checked
-    }
-  }
-`;
-
 const Index = ({ text, setFieldFlag, taskId, fieldFlag }) => {
   const [createTaskItem] = useMutation(CREATE_TASK_ITEM, {
     update(cache, { data: { createTaskItem } }) {
@@ -55,13 +38,7 @@ const Index = ({ text, setFieldFlag, taskId, fieldFlag }) => {
           taskItems(exist) {
             const newTaskItem = cache.writeFragment({
               data: createTaskItem,
-              fragment: gql`
-                fragment item on taskItems {
-                  id
-                  text
-                  checked
-                }
-              `,
+              fragment: ITEM,
             });
 
             return [...exist, newTaskItem];
@@ -77,15 +54,7 @@ const Index = ({ text, setFieldFlag, taskId, fieldFlag }) => {
         fields: {
           taskItems(exist) {
             const data = cache.readQuery({
-              query: gql`
-                query taskItems {
-                  taskItems {
-                    id
-                    text
-                    checked
-                  }
-                }
-              `,
+              query: TASK_ITEMS,
             });
 
             const newTaskItem = data.taskItems.map((obj) =>
